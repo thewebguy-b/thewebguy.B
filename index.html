@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THEWEBGUY.B | Premium Design Studio</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/cScMFwPg/twglogo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #8BA888; 
+            --bg-secondary: #97b594;
+            --accent-pink: #F4C2C2;
+            --accent-sand: #f2e9e4;
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.75);
+            --text-muted-extra: rgba(255, 255, 255, 0.5);
+            --marquee-bg: #1a202c;
+            --marquee-text: #ffffff;
+            --menu-link-color: #1a202c;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            cursor: none;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+        }
+
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.04;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3C/svg%3E");
+        }
+
+        /* 3D Transform Utilities */
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        
+        .type__expand {
+            vertical-align: middle;
+            display: inline-grid;
+        }
+        .type__expand-img {
+            display: block;
+            position: relative;
+            aspect-ratio: 16/9;
+            width: 0%;
+            overflow: hidden;
+            border-radius: 10rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .type__expand-img-inner {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+        }
+
+        .glass-light {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+        .scannable-card-container {
+            position: relative;
+            width: 400px;
+            max-width: 85vw;
+            height: 250px;
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 640px) {
+            .scannable-card-container {
+                height: 300px;
+            }
+        }
+
+        .card-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 2rem;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .card-layer-normal {
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            clip-path: inset(0 var(--clip-right, 0%) 0 0);
+        }
+        .card-layer-logic {
+            z-index: 1;
+            background: #1a202c;
+            color: #94a3b8;
+            clip-path: inset(0 0 0 var(--clip-left, 0%));
+        }
+        .logic-content {
+            padding: 1.5rem;
+            font-family: ui-monospace, monospace;
+            font-size: 10px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+        @media (min-width: 768px) {
+            .logic-content {
+                padding: 2.5rem;
+                font-size: 11px;
+                line-height: 1.5;
+            }
+        }
+
+        .marquee-menu-item {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .marquee-menu-link {
+            display: block;
+            position: relative;
+            z-index: 2;
+            padding: 1.5rem 0;
+            font-size: 10vw;
+            line-height: 1;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--menu-link-color);
+            transition: color 0.4s;
+            cursor: pointer;
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+            .marquee-menu-link {
+                padding: 2.5rem 0;
+                font-size: 6vw;
+            }
+        }
+        .marquee {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: var(--marquee-bg);
+            transform: translate3d(0, 101%, 0);
+            z-index: 3;
+            overflow: hidden;
+        }
+        .marquee__inner-wrap {
+            height: 100%;
+            width: 100%;
+            transform: translate3d(0, -101%, 0);
+        }
+        .marquee__inner {
+            height: 100%;
+            width: fit-content;
+            align-items: center;
+            display: flex;
+            position: relative;
+            animation: marquee-anim 15s linear infinite;
+            will-change: transform;
+        }
+        @keyframes marquee-anim {
+            100% {
+                transform: translate3d(-50%, 0, 0);
+            }
+        }
+        .marquee span {
+            white-space: nowrap;
+            font-size: 8vw;
+            line-height: 1;
+            font-weight: 900;
+            padding: 0 4vw;
+            text-transform: uppercase;
+            color: var(--marquee-text);
+        }
+        @media (min-width: 768px) {
+            .marquee span {
+                font-size: 5vw;
+                padding: 0 2vw;
+            }
+        }
+        .marquee__img {
+            width: 20vw;
+            height: 8vw;
+            margin: 0 2vw;
+            border-radius: 5rem;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+        @media (min-width: 768px) {
+            .marquee__img {
+                width: 12vw;
+                height: 4vw;
+                margin: 0 1vw;
+            }
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "framer-motion": "https://esm.sh/framer-motion@^12.33.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "lucide-react": "https://esm.sh/lucide-react@^0.475.0",
+    "clsx": "https://esm.sh/clsx@^2.1.1",
+    "tailwind-merge": "https://esm.sh/tailwind-merge@^3.0.1",
+    "gsap": "https://esm.sh/gsap@^3.12.5",
+    "gsap/Flip": "https://esm.sh/gsap@^3.12.5/Flip",
+    "gsap/ScrollTrigger": "https://esm.sh/gsap@^3.12.5/ScrollTrigger",
+    "gsap/": "https://esm.sh/gsap@^3.12.5/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
